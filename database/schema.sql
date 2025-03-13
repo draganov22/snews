@@ -1,0 +1,36 @@
+CREATE TABLE Users (
+    UserId INT PRIMARY KEY IDENTITY(1,1),
+    Username NVARCHAR(50) NOT NULL UNIQUE,
+    PasswordHash NVARCHAR(256) NOT NULL,
+    Email NVARCHAR(100) NOT NULL UNIQUE,
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE Categories (
+    CategoryId INT PRIMARY KEY IDENTITY(1,1),
+    Name NVARCHAR(50) NOT NULL UNIQUE,
+    Description NVARCHAR(255)
+);
+
+CREATE TABLE Tags (
+    TagId INT PRIMARY KEY IDENTITY(1,1),
+    Name NVARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE NewsArticles (
+    ArticleId INT PRIMARY KEY IDENTITY(1,1),
+    Title NVARCHAR(100) NOT NULL,
+    Content NVARCHAR(MAX) NOT NULL,
+    CategoryId INT FOREIGN KEY REFERENCES Categories(CategoryId),
+    Tags NVARCHAR(255),
+    VideoUrl NVARCHAR(255),
+    Images NVARCHAR(255),
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE UserFavorites (
+    UserFavoriteId INT PRIMARY KEY IDENTITY(1,1),
+    UserId INT FOREIGN KEY REFERENCES Users(UserId),
+    ArticleId INT FOREIGN KEY REFERENCES NewsArticles(ArticleId),
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
