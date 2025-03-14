@@ -22,16 +22,16 @@ INSERT INTO News (Title, Content, CategoryID) VALUES ('Celebrity Gossip', 'Lates
 INSERT INTO News (Title, Content, CategoryID) VALUES ('Market Analysis', 'In-depth market analysis...', 1);
 
 -- Insert NewsTags
-INSERT INTO NewsTags (NewsID, TagID) VALUES (11, 1);
-INSERT INTO NewsTags (NewsID, TagID) VALUES (12, 2);
-INSERT INTO NewsTags (NewsID, TagID) VALUES (13, 3);
-INSERT INTO NewsTags (NewsID, TagID) VALUES (16, 4);
-INSERT INTO NewsTags (NewsID, TagID) VALUES (17, 5);
-INSERT INTO NewsTags (NewsID, TagID) VALUES (18, 1);
-INSERT INTO NewsTags (NewsID, TagID) VALUES (21, 2);
-INSERT INTO NewsTags (NewsID, TagID) VALUES (22, 3);
-INSERT INTO NewsTags (NewsID, TagID) VALUES (23, 4);
-INSERT INTO NewsTags (NewsID, TagID) VALUES (24, 5);
+INSERT INTO NewsTags (NewsID, TagID) VALUES (1, 1);
+INSERT INTO NewsTags (NewsID, TagID) VALUES (2, 2);
+INSERT INTO NewsTags (NewsID, TagID) VALUES (3, 3);
+INSERT INTO NewsTags (NewsID, TagID) VALUES (4, 4);
+INSERT INTO NewsTags (NewsID, TagID) VALUES (5, 5);
+INSERT INTO NewsTags (NewsID, TagID) VALUES (6, 1);
+INSERT INTO NewsTags (NewsID, TagID) VALUES (7, 2);
+INSERT INTO NewsTags (NewsID, TagID) VALUES (8, 3);
+INSERT INTO NewsTags (NewsID, TagID) VALUES (9, 4);
+INSERT INTO NewsTags (NewsID, TagID) VALUES (10, 5);
 
 INSERT INTO Users(Username, PasswordHash, FavoriteCategoryID) VALUES( 'Ironforst', '1', 1)
 INSERT INTO Users(Username, PasswordHash, FavoriteCategoryID) VALUES( 'DimDragon', '1', 1)

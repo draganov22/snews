@@ -22,7 +22,7 @@ CREATE TABLE News (
     Content TEXT NOT NULL,
     CategoryID INT,
     VideoLink VARCHAR(MAX) NULL,
-    PublishDate DATETIME NOT NULL,
+    PublishDate DATETIME NOT NULL DEFAULT GETDATE(),
     FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
 );
 
