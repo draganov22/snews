@@ -1,30 +1,38 @@
 {
   "format": 1,
   "restore": {
-    "C:\\diplomen proekt\\sports-news-app\\backend\\SportsNewsApp.csproj": {}
+    "P:\\SportNews\\snews\\backend\\SportsNewsApp.csproj": {}
   },
   "projects": {
-    "C:\\diplomen proekt\\sports-news-app\\backend\\SportsNewsApp.csproj": {
+    "P:\\SportNews\\snews\\backend\\SportsNewsApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\diplomen proekt\\sports-news-app\\backend\\SportsNewsApp.csproj",
+        "projectUniqueName": "P:\\SportNews\\snews\\backend\\SportsNewsApp.csproj",
         "projectName": "SportsNewsApp",
-        "projectPath": "C:\\diplomen proekt\\sports-news-app\\backend\\SportsNewsApp.csproj",
-        "packagesPath": "C:\\Users\\Ironforst\\.nuget\\packages\\",
-        "outputPath": "C:\\diplomen proekt\\sports-news-app\\backend\\obj\\",
+        "projectPath": "P:\\SportNews\\snews\\backend\\SportsNewsApp.csproj",
+        "packagesPath": "C:\\Users\\DimDragon\\.nuget\\packages\\",
+        "outputPath": "P:\\SportNews\\snews\\backend\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Ironforst\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "P:\\SportNews\\snews\\backend\\NuGet.Config",
+          "C:\\Users\\DimDragon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net6.0"
+          "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net6.0": {
-            "targetAlias": "net6.0",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {}
           }
         },
@@ -41,32 +49,28 @@
         "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[6.0.0, )"
-            },
-            "Microsoft.AspNetCore.Cors": {
-              "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[8.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[6.5.0, )"
             }
           },
           "imports": [
@@ -80,24 +84,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.36, 6.0.36]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[6.0.36, 6.0.36]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.36, 6.0.36]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[6.0.36, 6.0.36]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -106,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

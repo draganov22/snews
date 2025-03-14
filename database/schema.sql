@@ -1,36 +1,50 @@
-CREATE TABLE Users (
-    UserId INT PRIMARY KEY IDENTITY(1,1),
-    Username NVARCHAR(50) NOT NULL UNIQUE,
-    PasswordHash NVARCHAR(256) NOT NULL,
-    Email NVARCHAR(100) NOT NULL UNIQUE,
-    CreatedAt DATETIME DEFAULT GETDATE()
-);
-
 CREATE TABLE Categories (
-    CategoryId INT PRIMARY KEY IDENTITY(1,1),
-    Name NVARCHAR(50) NOT NULL UNIQUE,
-    Description NVARCHAR(255)
+    CategoryID INT PRIMARY KEY IDENTITY,
+    CategoryName VARCHAR(100) UNIQUE NOT NULL
 );
 
 CREATE TABLE Tags (
-    TagId INT PRIMARY KEY IDENTITY(1,1),
-    Name NVARCHAR(50) NOT NULL UNIQUE
+    TagID INT PRIMARY KEY IDENTITY,
+    TagName VARCHAR(100) UNIQUE NOT NULL
 );
 
-CREATE TABLE NewsArticles (
-    ArticleId INT PRIMARY KEY IDENTITY(1,1),
-    Title NVARCHAR(100) NOT NULL,
-    Content NVARCHAR(MAX) NOT NULL,
-    CategoryId INT FOREIGN KEY REFERENCES Categories(CategoryId),
-    Tags NVARCHAR(255),
-    VideoUrl NVARCHAR(255),
-    Images NVARCHAR(255),
-    CreatedAt DATETIME DEFAULT GETDATE()
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY IDENTITY,
+    Username VARCHAR(100) UNIQUE NOT NULL,
+    PasswordHash VARCHAR(MAX) NOT NULL,
+    FavoriteCategoryID INT,
+    FOREIGN KEY (FavoriteCategoryID) REFERENCES Categories(CategoryID)
 );
 
-CREATE TABLE UserFavorites (
-    UserFavoriteId INT PRIMARY KEY IDENTITY(1,1),
-    UserId INT FOREIGN KEY REFERENCES Users(UserId),
-    ArticleId INT FOREIGN KEY REFERENCES NewsArticles(ArticleId),
-    CreatedAt DATETIME DEFAULT GETDATE()
+CREATE TABLE News (
+    NewsID INT PRIMARY KEY IDENTITY,
+    Title VARCHAR(200) NOT NULL,
+    Content TEXT NOT NULL,
+    CategoryID INT,
+    VideoLink VARCHAR(MAX) NULL,
+    PublishDate DATETIME NOT NULL,
+    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
+);
+
+CREATE TABLE NewsImages (
+    NewsImageID INT PRIMARY KEY IDENTITY,
+    NewsID INT,
+    ImageLink VARCHAR(MAX) NOT NULL,
+    FOREIGN KEY (NewsID) REFERENCES News(NewsID)
+);
+
+CREATE TABLE UserTags (
+    UserID INT,
+    TagID INT,
+    PRIMARY KEY (UserID, TagID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (TagID) REFERENCES Tags(TagID)
+);
+
+CREATE TABLE NewsTags (
+    NewsID INT,
+    TagID INT,
+    PRIMARY KEY (NewsID, TagID),
+    FOREIGN KEY (NewsID) REFERENCES News(NewsID),
+    FOREIGN KEY (TagID) REFERENCES Tags(TagID)
 );

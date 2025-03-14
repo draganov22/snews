@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using sports_news_app.Models;
-using sports_news_app.Data;
+using SportsNewsApp.Models;
+using SportsNewsApp.Data;
 
-namespace sports_news_app.Services
+namespace SportsNewsApp.Services
 {
     public class NewsService
     {
@@ -16,21 +16,55 @@ namespace sports_news_app.Services
             _context = context;
         }
 
-        public async Task<List<NewsItem>> FetchAllNews()
+        public async Task<List<News>> GetNews(int categoryId, int[] tagIds)
         {
-            return await _context.NewsArticles.ToListAsync();
+            var newsQuery = _context.News.AsQueryable();
+
+            if (categoryId > 0)
+            {
+                newsQuery = newsQuery.Where(n => n.CategoryID == categoryId);
+            }
+
+            if (tagIds != null && tagIds.Length > 0)
+            {
+                newsQuery = newsQuery.Where(n => n.Tags.Any(nt => tagIds.Contains(nt.TagID)));
+            }
+
+            return await newsQuery.ToListAsync();
         }
 
-        public async Task<NewsItem> FetchNewsById(int id)
+        public async Task<News> GetNewsByID(int newsId)
         {
-            return await _context.NewsArticles.FindAsync(id);
+            return await _context.News
+                .Include(n => n.Images)
+                .Include(n => n.Tags)
+                .ThenInclude(nt => nt.Tag)
+                .FirstOrDefaultAsync(n => n.NewsID == newsId);
         }
 
-        public async Task<NewsItem> CreateNews(NewsItem newsItem)
+        public async Task<News> CreateNews(News news, string[] imageLinks, string videoLink, int[] tagIds)
         {
-            _context.NewsArticles.Add(newsItem);
+            _context.News.Add(news);
             await _context.SaveChangesAsync();
-            return newsItem;
+
+            if (imageLinks != null)
+            {
+                foreach (var link in imageLinks)
+                {
+                    _context.NewsImages.Add(new NewsImage { NewsID = news.NewsID, ImageLink = link });
+                }
+            }
+
+            if (tagIds != null)
+            {
+                foreach (var tagId in tagIds)
+                {
+                    _context.NewsTags.Add(new NewsTag { NewsID = news.NewsID, TagID = tagId });
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return news;
         }
     }
 }
