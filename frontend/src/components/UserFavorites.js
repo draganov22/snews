@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useSelector } from 'react-redux'; // Import useSelector for accessing state
+import api from '../services/api'; // Updated import
 
 const UserFavorites = () => {
+  const userId = useSelector((state) => state.auth.userId); // Access userId from application state
+  console.log('User ID:', userId); // Log userId for debugging
   const [favorites, setFavorites] = useState({ favoriteCategory: null, favoriteTags: [] });
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
-  const userId = 1; // Replace with actual user ID
 
   useEffect(() => {
+    if (!userId) return; // Ensure userId is available before making API calls
+
     const fetchFavorites = async () => {
-      const response = await axios.get(`/api/users/${userId}/favorites`);
+      const response = await api.get(`/users/${userId}/favorites`);
       setFavorites(response.data);
     };
 
     const fetchCategories = async () => {
-      const response = await axios.get('/api/categories');
+      const response = await api.get('/categories');
       setCategories(response.data);
     };
 
     const fetchTags = async () => {
-      const response = await axios.get('/api/tags');
+      const response = await api.get('/tags');
       setTags(response.data);
     };
 
@@ -29,7 +33,8 @@ const UserFavorites = () => {
   }, [userId]);
 
   const handleUpdateFavorites = async () => {
-    await axios.put(`/api/users/${userId}/favorites`, {
+    if (!userId) return; // Ensure userId is available before updating
+    await api.put(`/users/${userId}/favorites`, {
       categoryId: favorites.favoriteCategory.categoryID,
       tagIds: favorites.favoriteTags.map(tag => tag.tagID)
     });
@@ -43,7 +48,7 @@ const UserFavorites = () => {
         onChange={(e) => setFavorites({ ...favorites, favoriteCategory: categories.find(c => c.categoryID === parseInt(e.target.value)) })}
       >
         {categories.map(category => (
-          <option key={category.categoryID} value={category.categoryID}>{category.name}</option>
+          <option key={category.categoryID} value={category.categoryID}>{category.categoryName}</option>
         ))}
       </select>
 
@@ -60,11 +65,11 @@ const UserFavorites = () => {
               setFavorites({ ...favorites, favoriteTags: newFavoriteTags });
             }}
           />
-          {tag.name}
+          {tag.tagName}
         </div>
       ))}
 
-      <button onClick={handleUpdateFavorites}>Update Favorites</button>
+      <button onClick={handleUpdateFavorites}>Update Preferences</button>
     </div>
   );
 };

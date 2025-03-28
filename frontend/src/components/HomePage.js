@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { fetchNews } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
   const [news, setNews] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
@@ -23,7 +25,12 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1>Welcome to the Sports News Application</h1>
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', backgroundColor: '#f8f9fa' }}>
+        <h1>Sports News Application</h1>
+        <div style={{ cursor: 'pointer' }} onClick={() => navigate('/favorites')}>
+          <img src="/user-icon.png" alt="User Icon" style={{ width: '30px', height: '30px' }} />
+        </div>
+      </header>
       <ul>
         {news.map(item => (
           <li key={item.newsID}>

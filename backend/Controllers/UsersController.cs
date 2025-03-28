@@ -6,6 +6,10 @@ using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 
 namespace SportsNewsApp.Controllers
 {
@@ -14,10 +18,12 @@ namespace SportsNewsApp.Controllers
     public class UsersController : ControllerBase
     {
         private readonly SportsNewsContext _context;
+        private readonly IConfiguration _configuration;
 
-        public UsersController(SportsNewsContext context)
+        public UsersController(SportsNewsContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         [HttpPost("register")]
@@ -53,8 +59,23 @@ namespace SportsNewsApp.Controllers
 
         private string GenerateToken(User user)
         {
-            // Simplified token generation logic (replace with actual implementation)
-            return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{user.UserID}:{user.Username}"));
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = System.Text.Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                    new Claim(ClaimTypes.Name, user.Username)
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(int.Parse(_configuration["Jwt:ExpiryInMinutes"])),
+                Issuer = _configuration["Jwt:Issuer"],
+                Audience = _configuration["Jwt:Audience"],
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
 
         [Authorize]

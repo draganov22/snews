@@ -1,37 +1,43 @@
 import React, { useState } from 'react';
-import axios from '../services/api'; // Import axios instance
+import { useDispatch } from 'react-redux'; // Import useDispatch
+import { setUserId } from '../features/auth/authSlice'; // Import setUserId action
+import axios from '../services/api';
+import jwt_decode from 'jwt-decode';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); // State to store error message
-  const [isLoading, setIsLoading] = useState(false); // State to prevent multiple submissions
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch(); // Initialize useDispatch
 
   async function login(username, password) {
-    setIsLoading(true); // Set loading state to true
-    const user = { Username: username, PasswordHash: password }; // Correct User model with proper casing
+    setIsLoading(true);
+    const user = { Username: username, PasswordHash: password };
     try {
-      const response = await axios.post('/users/login', user); // Use axios instance for API call
+      const response = await axios.post('/users/login', user);
       const data = response.data;
-      localStorage.setItem('authToken', data.Token); // Store token in LocalStorage
-      window.location.href = '/'; // Redirect to homepage
+      localStorage.setItem('authToken', data.token);
+      const decodedToken = jwt_decode(data.token);
+      dispatch(setUserId(decodedToken.nameid)); // Dispatch setUserId with userId
+      window.location.href = '/';
     } catch (error) {
-      setError('Login failed. Please check your credentials.'); // Set error message
+      setError('Login failed. Please check your credentials.');
     }
-    setIsLoading(false); // Reset loading state
+    setIsLoading(false);
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isLoading) return; // Prevent multiple submissions
-    setError(''); // Clear previous error
+    if (isLoading) return;
+    setError('');
     login(username, password);
   };
 
   return (
     <div>
       <h1>Login</h1>
-      {error && <div style={{ color: 'red' }}>{error}</div>} {/* Display error message */}
+      {error && <div style={{ color: 'red' }}>{error}</div>}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
