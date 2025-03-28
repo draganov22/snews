@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -10,5 +9,9 @@ root.render(
   </React.StrictMode>
 );
 
-// Register the service worker
-serviceWorker.register();
+// Register the service worker from the public folder
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js')
+    .then(() => console.log('Service Worker registered'))
+    .catch((error) => console.error('Service Worker registration failed:', error));
+}

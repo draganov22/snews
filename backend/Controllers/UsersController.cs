@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using SportsNewsApp.Models;
 using SportsNewsApp.Data;
 using System.Threading.Tasks;
+using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SportsNewsApp.Controllers
 {
@@ -44,11 +46,18 @@ namespace SportsNewsApp.Controllers
                 return Unauthorized();
             }
 
-            // Generate token (simplified for example purposes)
-            var token = "dummy-token"; // Replace with actual token generation logic
+            // Generate token
+            var token = GenerateToken(existingUser);
             return Ok(new { Token = token });
         }
 
+        private string GenerateToken(User user)
+        {
+            // Simplified token generation logic (replace with actual implementation)
+            return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{user.UserID}:{user.Username}"));
+        }
+
+        [Authorize]
         [HttpGet("{userId}/favorites")]
         public async Task<IActionResult> GetUserFavorites(int userId)
         {
@@ -72,6 +81,7 @@ namespace SportsNewsApp.Controllers
             return Ok(favorites);
         }
 
+        [Authorize]
         [HttpPut("{userId}/favorites")]
         public async Task<IActionResult> UpdateUserFavorites(int userId, int categoryId, int[] tagIds)
         {

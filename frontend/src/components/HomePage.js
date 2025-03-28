@@ -5,6 +5,13 @@ const HomePage = () => {
   const [news, setNews] = useState([]);
 
   useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      window.location.href = '/login'; // Redirect to login page if not logged in
+    }
+  }, []);
+
+  useEffect(() => {
     fetchNews()
       .then(response => {
         setNews(response.data);
