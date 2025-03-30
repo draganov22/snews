@@ -1,77 +1,125 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux'; // Import useSelector for accessing state
-import api from '../services/api'; // Updated import
+import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
+import BaseComponent from './BaseComponent';
+import { updateFavorites } from '../features/auth/authSlice';
 
-const UserFavorites = () => {
-  const userId = useSelector((state) => state.auth.userId); // Access userId from application state
-  console.log('User ID:', userId); // Log userId for debugging
-  const [favorites, setFavorites] = useState({ favoriteCategory: null, favoriteTags: [] });
-  const [categories, setCategories] = useState([]);
-  const [tags, setTags] = useState([]);
+class UserFavorites extends BaseComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      favorites: { favoriteCategory: null, favoriteTags: [] },
+      categories: [],
+      tags: [],
+    };
+  }
 
-  useEffect(() => {
-    if (!userId) return; // Ensure userId is available before making API calls
+  componentDidMount() {
+    const userId = this.props.userId; // Get userId from props
+    if (!userId) return;
 
     const fetchFavorites = async () => {
       const response = await api.get(`/users/${userId}/favorites`);
-      setFavorites(response.data);
+      this.setState({ favorites: response.data });
     };
 
     const fetchCategories = async () => {
       const response = await api.get('/categories');
-      setCategories(response.data);
+      this.setState({ categories: response.data });
     };
 
     const fetchTags = async () => {
       const response = await api.get('/tags');
-      setTags(response.data);
+      this.setState({ tags: response.data });
     };
 
     fetchFavorites();
     fetchCategories();
     fetchTags();
-  }, [userId]);
+  }
 
-  const handleUpdateFavorites = async () => {
-    if (!userId) return; // Ensure userId is available before updating
-    await api.put(`/users/${userId}/favorites`, {
-      categoryId: favorites.favoriteCategory.categoryID,
-      tagIds: favorites.favoriteTags.map(tag => tag.tagID)
-    });
+  handleUpdateFavorites = async () => {
+    const userId = this.props.userId; // Get userId from props
+    if (!userId) return;
+
+    const updatedFavorites = {
+      categoryId: this.state.favorites.favoriteCategory.categoryID,
+      tagIds: this.state.favorites.favoriteTags.map((tag) => tag.tagID),
+    };
+
+    await api.put(`/users/${userId}/favorites`, updatedFavorites);
+
+    // Dispatch action to update auth store
+    this.props.dispatch(updateFavorites(updatedFavorites));
+
+    this.props.navigate('/'); // Use navigate passed as a prop
   };
 
-  return (
-    <div>
-      <h2>Favorite Category</h2>
-      <select
-        value={favorites.favoriteCategory?.categoryID || ''}
-        onChange={(e) => setFavorites({ ...favorites, favoriteCategory: categories.find(c => c.categoryID === parseInt(e.target.value)) })}
-      >
-        {categories.map(category => (
-          <option key={category.categoryID} value={category.categoryID}>{category.categoryName}</option>
+  render() {
+    const { favorites, categories, tags } = this.state;
+
+    return (
+      <div>
+        <h2>Favorite Category</h2>
+        <select
+          value={favorites.favoriteCategory?.categoryID || ''}
+          onChange={(e) =>
+            this.setState({
+              favorites: {
+                ...favorites,
+                favoriteCategory: categories.find(
+                  (c) => c.categoryID === parseInt(e.target.value)
+                ),
+              },
+            })
+          }
+        >
+          {categories.map((category) => (
+            <option key={category.categoryID} value={category.categoryID}>
+              {category.categoryName}
+            </option>
+          ))}
+        </select>
+
+        <h2>Favorite Tags</h2>
+        {tags.map((tag) => (
+          <div key={tag.tagID}>
+            <input
+              type="checkbox"
+              checked={favorites.favoriteTags.some(
+                (favTag) => favTag.tagID === tag.tagID
+              )}
+              onChange={(e) => {
+                const newFavoriteTags = e.target.checked
+                  ? [...favorites.favoriteTags, tag]
+                  : favorites.favoriteTags.filter(
+                      (favTag) => favTag.tagID !== tag.tagID
+                    );
+                this.setState({
+                  favorites: { ...favorites, favoriteTags: newFavoriteTags },
+                });
+              }}
+            />
+            {tag.tagName}
+          </div>
         ))}
-      </select>
 
-      <h2>Favorite Tags</h2>
-      {tags.map(tag => (
-        <div key={tag.tagID}>
-          <input
-            type="checkbox"
-            checked={favorites.favoriteTags.some(favTag => favTag.tagID === tag.tagID)}
-            onChange={(e) => {
-              const newFavoriteTags = e.target.checked
-                ? [...favorites.favoriteTags, tag]
-                : favorites.favoriteTags.filter(favTag => favTag.tagID !== tag.tagID);
-              setFavorites({ ...favorites, favoriteTags: newFavoriteTags });
-            }}
-          />
-          {tag.tagName}
-        </div>
-      ))}
+        <button onClick={this.handleUpdateFavorites}>Update Preferences</button>
+        <button onClick={() => this.props.navigate('/')}>Cancel</button>
+      </div>
+    );
+  }
+}
 
-      <button onClick={handleUpdateFavorites}>Update Preferences</button>
-    </div>
-  );
+const mapStateToProps = (state) => ({
+  userId: state.auth.userId, // Map userId from Redux store to props
+});
+
+// Wrapper component to inject navigate as a prop
+const UserFavoritesWithNavigate = (props) => {
+  const navigate = useNavigate();
+  return <UserFavorites {...props} navigate={navigate} />;
 };
 
-export default UserFavorites;
+export default connect(mapStateToProps)(UserFavoritesWithNavigate);

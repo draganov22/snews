@@ -10,10 +10,18 @@ import jwtDecode from 'jwt-decode'; // Import jwt-decode library
 const token = localStorage.getItem('authToken');
 if (token) {
   try {
-    const payload = jwtDecode(token); // Decode token using jwt-decode
-    const userId = payload.nameid; // Extract userId
-    if (userId) {
-      store.dispatch(setUserId(userId)); // Dispatch setUserId action
+    const payload = jwtDecode(token);
+    const userId = payload.nameid;
+    const role = payload.role;
+    const favoriteCategoryID = payload.favoriteCategoryID;
+    const tags = payload.tags;
+    const expiry = payload.exp * 1000; // Convert expiry to milliseconds
+    console.log('Decoded token:', payload);
+    if (Date.now() > expiry) {
+      localStorage.removeItem('authToken'); // Remove expired token
+      window.location.href = '/login'; // Redirect to login page
+    } else if (userId) {
+      store.dispatch(setUserId({ userId, role, favoriteCategoryID, tags }));
     }
   } catch (error) {
     console.error('Failed to decode token:', error);

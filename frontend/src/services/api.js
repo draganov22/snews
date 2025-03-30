@@ -19,10 +19,18 @@ api.interceptors.request.use((config) => {
 
 export default api;
 
-export const fetchNews = () => {
-  return api.get('/news');
+export const fetchNews = ({ categoryID, tags }) => {
+  const params = {};
+  if (categoryID) params.categoryId = categoryID;
+  if (tags) params.tagIds = tags;
+
+  return api.get('/news', { params });
 };
 
 export const fetchNewsDetails = (newsId) => {
   return api.get(`/news/${newsId}`);
+};
+
+export const deleteNews = (newsId) => {
+  return api.delete(`/news/${newsId}`);
 };

@@ -13,6 +13,7 @@ CREATE TABLE Users (
     Username VARCHAR(100) UNIQUE NOT NULL,
     PasswordHash VARCHAR(MAX) NOT NULL,
     FavoriteCategoryID INT,
+    IsAdmin BIT NOT NULL DEFAULT 0,
     FOREIGN KEY (FavoriteCategoryID) REFERENCES Categories(CategoryID)
 );
 
