@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { fetchNewsDetails } from '../services/api';
 
 const NewsDetails = () => {
   const { newsId } = useParams();
+  const navigate = useNavigate();
   const [news, setNews] = useState(null);
 
   useEffect(() => {
     const fetchNews = async () => {
-      const response = await axios.get(`/api/news/${newsId}`);
+      const response = await fetchNewsDetails(newsId);
       setNews(response.data);
     };
     fetchNews();
@@ -18,6 +19,7 @@ const NewsDetails = () => {
 
   return (
     <div>
+      <button onClick={() => navigate('/')}>Back to Home</button>
       <h2>{news.title}</h2>
       <p>{news.content}</p>
       {news.images && news.images.map((image, index) => (

@@ -16,11 +16,13 @@ namespace SportsNewsApp.Models
         [Required]
         public string PasswordHash { get; set; }
 
-        public int FavoriteCategoryID { get; set; }
+        public int? FavoriteCategoryID { get; set; }
 
         [ForeignKey("FavoriteCategoryID")]
         public Category FavoriteCategory { get; set; }
 
         public ICollection<UserTag> Tags { get; set; } = new List<UserTag>();
+
+        public bool IsAdmin { get; set; }
     }
 }
