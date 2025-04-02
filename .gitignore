@@ -3,4 +3,3 @@ backend/bin/
 .vs/
 node_modules/
 frontend/package-lock.json
-/frontend/package-lock.json

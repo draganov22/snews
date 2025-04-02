@@ -112,6 +112,8 @@ namespace SportsNewsApp.Controllers
                 user.UserID,
                 user.Username,
                 user.FavoriteCategoryID,
+                user.PasswordHash,
+                user.IsAdmin,
                 Tags = user.Tags.Select(ut => ut.Tag).ToList()
             });
 
