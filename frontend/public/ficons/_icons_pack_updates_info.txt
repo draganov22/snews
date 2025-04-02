@@ -1,0 +1,16 @@
+1. Note that this folder contains system files like:
+"font-ficons.js" that are not part from the icons pack itself. Do not erase this file!
+
+
+
+2. When pack is updated put all new icons list css declarations from 
+"ClientApp\src\ficons\style.css" 
+in the 
+"ClientApp\src\ficons\font-ficons.js" 
+but keep in mind that every font icon code for example "\e90a" must include extra slash "\" symbol like "\\e90a". 
+We use the backslash (\) escape character to prevent JavaScript from interpreting a quote as the end of the string.
+
+
+
+3. Same Font Icons CSS Declaration List from "font-ficons.js" must be updated also in file "ClientApp\src\styles\_dragon-skin.js"
+
