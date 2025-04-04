@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux'; // Import useDispatch
-import { clearUser } from '../features/auth/authSlice'; // Import clearUser action
-import '../styles.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux"; // Import useDispatch
+import { clearUser } from "../features/auth/authSlice"; // Import clearUser action
+import "../styles.css";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -20,35 +20,63 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken'); // Remove token from localStorage
+    localStorage.removeItem("authToken"); // Remove token from localStorage
     dispatch(clearUser()); // Clear user state in Redux
-    navigate('/login'); // Redirect to login page
+    navigate("/login"); // Redirect to login page
   };
 
   return (
-    <header className="header">
-      <div className="header-container">
+    <header className="site-header hbox vcbox">
+      <div class="logo">
+        <img src="images/logo.png" alt="Sports News" class="img-logo" />
+      </div>
+      <div className="hbox endbox pr-10">
         <div className="menu-container">
-          <button className="menu-button" onClick={toggleMenu}>
-            Menu
-          </button>
-          <ul className={`menu-dropdown ${menuVisible ? 'visible' : ''}`}>
-            <li className="menu-item" onClick={() => handleMenuItemClick('/')}>Home</li>
-            {userRole === 'Admin' && (
+          <button
+            className="menu-button img-btn ficon ficon-menu"
+            onClick={toggleMenu}
+          ></button>
+          <ul className={`menu-dropdown ${menuVisible ? "visible" : ""}`}>
+            <li className="menu-item" onClick={() => handleMenuItemClick("/")}>
+              Home
+            </li>
+            {userRole === "Admin" && (
               <>
-                <li className="menu-item" onClick={() => handleMenuItemClick('/categories')}>Categories</li>
-                <li className="menu-item" onClick={() => handleMenuItemClick('/tags')}>Tags</li>
-                <li className="menu-item" onClick={() => handleMenuItemClick('/users')}>Users</li>
-                <li className="menu-item" onClick={() => handleMenuItemClick('/news')}>News</li>
+                <li
+                  className="menu-item"
+                  onClick={() => handleMenuItemClick("/categories")}
+                >
+                  Categories
+                </li>
+                <li
+                  className="menu-item"
+                  onClick={() => handleMenuItemClick("/tags")}
+                >
+                  Tags
+                </li>
+                <li
+                  className="menu-item"
+                  onClick={() => handleMenuItemClick("/users")}
+                >
+                  Users
+                </li>
+                <li
+                  className="menu-item"
+                  onClick={() => handleMenuItemClick("/news")}
+                >
+                  News
+                </li>
               </>
             )}
-            <li className="menu-item" onClick={handleLogout}>Logout</li>
+            <li className="menu-item" onClick={handleLogout}>
+              Logout
+            </li>
           </ul>
         </div>
-        <h1>Sports News Application</h1>
-        <div className="user-icon" onClick={() => navigate('/favorites')}>
-          <img src="/user-icon.png" alt="User Icon" />
-        </div>
+        <div
+          className="user-icon img-btn ficon ficon-user1"
+          onClick={() => navigate("/favorites")}
+        ></div>
       </div>
     </header>
   );

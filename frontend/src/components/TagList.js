@@ -1,7 +1,7 @@
-import React from 'react';
-import api from '../services/api';
-import TagForm from './TagForm';
-import BaseComponent from './BaseComponent';
+import React from "react";
+import api from "../services/api";
+import TagForm from "./TagForm";
+import BaseComponent from "./BaseComponent";
 
 class TagList extends BaseComponent {
   state = {
@@ -16,10 +16,10 @@ class TagList extends BaseComponent {
 
   fetchTags = async () => {
     try {
-      const response = await api.get('/tags');
+      const response = await api.get("/tags");
       this.setState({ tags: response.data });
     } catch (error) {
-      this.setError('Error fetching tags', error);
+      this.setError("Error fetching tags", error);
     }
   };
 
@@ -34,20 +34,20 @@ class TagList extends BaseComponent {
       if (updatedTag.tagID) {
         await api.put(`/tags/${updatedTag.tagID}`, updatedTag);
         this.setState((prevState) => ({
-          tags: prevState.tags.map(tag =>
+          tags: prevState.tags.map((tag) =>
             tag.tagID === updatedTag.tagID ? updatedTag : tag
           ),
           editingTag: null,
         }));
       } else {
-        const response = await api.post('/tags', updatedTag);
+        const response = await api.post("/tags", updatedTag);
         this.setState((prevState) => ({
           tags: [...prevState.tags, response.data],
           editingTag: null,
         }));
       }
     } catch (error) {
-      this.setError('Error saving tag', error);
+      this.setError("Error saving tag", error);
     }
   };
 
@@ -56,10 +56,10 @@ class TagList extends BaseComponent {
       this.clearError();
       await api.delete(`/tags/${tagID}`);
       this.setState((prevState) => ({
-        tags: prevState.tags.filter(tag => tag.tagID !== tagID),
+        tags: prevState.tags.filter((tag) => tag.tagID !== tagID),
       }));
     } catch (error) {
-      this.setError('Error deleting tag', error);
+      this.setError("Error deleting tag", error);
     }
   };
 
@@ -68,7 +68,7 @@ class TagList extends BaseComponent {
 
     return (
       <div>
-        <button onClick={() => this.setState({ editingTag: { tagName: '' } })}>Create</button>
+        <h1 class="page-title">Tags</h1>
         {editingTag ? (
           <TagForm
             tag={editingTag}
@@ -76,13 +76,31 @@ class TagList extends BaseComponent {
             onCancel={() => this.setState({ editingTag: null })}
           />
         ) : (
-          tags.map((tag) => (
-            <div key={tag.tagID}>
-              <h2>{tag.tagName}</h2>
-              <button onClick={() => this.handleEdit(tag)}>✏️</button>
-              <button onClick={() => this.handleDelete(tag.tagID)}>🗑️</button>
+          <>
+            <div class="hbox endbox mb-20">
+              <button
+                onClick={() => this.setState({ editingTag: { tagName: "" } })}
+                class="main-btn primary"
+              >
+                Create
+              </button>
             </div>
-          ))
+            <ul class="items-list">
+              {tags.map((tag) => (
+                <li key={tag.tagID} class="hbox vcbox">
+                  <div class="item-title flex-item">{tag.tagName}</div>
+                  <button
+                    onClick={() => this.handleEdit(tag)}
+                    class="img-btn ficon ficon-edit"
+                  ></button>
+                  <button
+                    onClick={() => this.handleDelete(tag.tagID)}
+                    class="img-btn ficon ficon-trash1"
+                  ></button>
+                </li>
+              ))}
+            </ul>
+          </>
         )}
       </div>
     );

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import BaseComponent from './BaseComponent';
-import { fetchNews } from '../services/api';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import BaseComponent from "./BaseComponent";
+import { fetchNews } from "../services/api";
+import { connect } from "react-redux";
 
 class HomePage extends BaseComponent {
   constructor(props) {
@@ -12,9 +12,9 @@ class HomePage extends BaseComponent {
   }
 
   componentDidMount() {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     if (!token) {
-      window.location.href = '/login'; // Redirect to login page if not logged in
+      window.location.href = "/login"; // Redirect to login page if not logged in
       return;
     }
 
@@ -27,12 +27,12 @@ class HomePage extends BaseComponent {
     const tags = this.props.tags;
 
     fetchNews({ categoryID: favoriteCategoryID, tags })
-      .then(response => {
+      .then((response) => {
         this.setState({ news: response.data });
         this.clearError();
       })
-      .catch(error => {
-        this.setError('There was an error fetching the news!');
+      .catch((error) => {
+        this.setError("There was an error fetching the news!");
       });
   }
 
@@ -40,18 +40,21 @@ class HomePage extends BaseComponent {
     const { news } = this.state;
 
     return (
-      <div>
-        <ul>
-          {news.map(item => (
-            <li key={item.newsID}>
-              <a href={`/news/${item.newsID}`}>
+      <ul class="news-list">
+        {news.map((item) => (
+          <li key={item.newsID} class="news">
+            <a href={`/news/${item.newsID}`} class="hbox">
+              {item.images && item.images.length > 0 && (
+                <img src={item.images[0]} alt={item.title} class="news-image" />
+              )}
+              <div class="flex-item ml-10">
                 <h4>{item.title}</h4>
-                <p>{item.content}</p>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+                <div class="news-content">{item.content}</div>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
     );
   }
 }

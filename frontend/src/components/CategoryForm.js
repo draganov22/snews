@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const CategoryForm = ({ category, onSubmit, onCancel }) => {
   const [categoryName, setCategoryName] = useState(category.categoryName);
@@ -9,18 +9,24 @@ const CategoryForm = ({ category, onSubmit, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={categoryName}
-        onChange={(e) => setCategoryName(e.target.value)}
-        placeholder="Category Name"
-        required
-      />
-      <button type="submit">Save</button>
-      <button type="button" onClick={onCancel}>
-        Cancel
-      </button>
+    <form onSubmit={handleSubmit} class="ctrl-form">
+      <div class="row">
+        <input
+          type="text"
+          value={categoryName}
+          onChange={(e) => setCategoryName(e.target.value)}
+          placeholder="Category Name"
+          required
+        />
+      </div>
+      <div class="row btn-wrap endbox">
+        <button type="submit" class="main-btn primary">
+          Save
+        </button>
+        <button type="button" class="main-btn" onClick={onCancel}>
+          Cancel
+        </button>
+      </div>
     </form>
   );
 };

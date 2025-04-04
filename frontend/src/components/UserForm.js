@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const UserForm = ({ user: initialUser, onSubmit, onCancel }) => {
-  const [user, setUser] = useState(initialUser || { username: '', passwordHash: '', isAdmin: false });
+  const [user, setUser] = useState(
+    initialUser || { username: "", passwordHash: "", isAdmin: false }
+  );
 
   useEffect(() => {
-    setUser(initialUser || { username: '', passwordHash: '', isAdmin: false });
+    setUser(initialUser || { username: "", passwordHash: "", isAdmin: false });
   }, [initialUser]);
 
   const handleSubmit = (e) => {
@@ -18,39 +20,45 @@ const UserForm = ({ user: initialUser, onSubmit, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>{initialUser ? 'Edit User' : 'Create User'}</h1>
-      <label>
-        Username:
+    <form onSubmit={handleSubmit} class="ctrl-form">
+      <div class="row">
         <input
           type="text"
           name="username"
+          placeholder="Username"
           value={user.username}
           onChange={handleChange}
           required
         />
-      </label>
-      <label>
-        Password:
+      </div>
+      <div class="row">
         <input
           type="password"
           name="passwordHash"
+          placeholder="Password"
           value={user.passwordHash}
           onChange={handleChange}
           required
         />
-      </label>
-      <label>
-        Admin:
+      </div>
+      <div class="row gap-5">
         <input
           type="checkbox"
           name="isAdmin"
           checked={user.isAdmin}
           onChange={(e) => setUser({ ...user, isAdmin: e.target.checked })}
+          class="ctrl-checkbox"
         />
-      </label>
-      <button type="submit">Save</button>
-      <button type="button" onClick={onCancel}>Cancel</button>
+        <label>Admin</label>
+      </div>
+      <div class="row btn-wrap endbox">
+        <button type="submit" class="main-btn primary">
+          Save
+        </button>
+        <button type="button" onClick={onCancel} class="main-btn">
+          Cancel
+        </button>
+      </div>
     </form>
   );
 };
