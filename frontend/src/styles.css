@@ -311,6 +311,11 @@ ul {
   text-align: justify;
 }
 
+video {
+  width: 100%;
+  height: auto;
+}
+
 .site-header {
   background-image: linear-gradient(0deg, var(--bg-fade) 0, transparent 76%),
     linear-gradient(
@@ -624,4 +629,15 @@ ul {
 .link-btn .ficon {
   display: inline-block;
   padding-right: 5px;
+}
+
+/* News */
+
+.news-image-list li {
+  line-height: 0;
+  margin-bottom: 10px;
+}
+
+.news-image-list img {
+  width: 100%;
 }

@@ -93,8 +93,11 @@ const NewsForm = ({ selectedNews, onSubmit, onCancel }) => {
 
   const handleVideoLinkChange = (e) => {
     const value = e.target.value;
-    setNews((prevNews) => ({ ...prevNews, videoLink: value }));
-    if (!isValidURL(value)) {
+    setNews((prevNews) => ({
+      ...prevNews,
+      videoLink: value === "" ? null : value, // Set to null if empty
+    }));
+    if (value && !isValidURL(value)) {
       setErrors((prevErrors) => ({
         ...prevErrors,
         videoLink: "Invalid video URL",

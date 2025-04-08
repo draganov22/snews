@@ -23,10 +23,14 @@ const NewsDetails = () => {
         <span class="ficon ficon-chevrons-left"></span>Back to Home
       </button>
       <h2 class="mb-20">{news.title}</h2>
+      <ul class="news-image-list">
       {news.images &&
         news.images.map((image, index) => (
-          <img key={index} src={image.imageLink} alt={`News ${index}`} />
+          <li>
+            <img key={index} src={image} alt={`News ${index}`} />
+          </li>
         ))}
+        </ul>
       <p class="text-justify">{news.content}</p>
       {news.videoLink && <video src={news.videoLink} controls />}
     </div>

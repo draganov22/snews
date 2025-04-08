@@ -28,7 +28,7 @@ const Header = () => {
   return (
     <header className="site-header hbox vcbox">
       <div class="logo">
-        <img src="images/logo.png" alt="Sports News" class="img-logo" />
+        <img src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="Sports News" class="img-logo" />
       </div>
       <div className="hbox endbox pr-10">
         <div className="menu-container">
